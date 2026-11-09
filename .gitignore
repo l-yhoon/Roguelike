@@ -1,0 +1,48 @@
+# Unity regenerates these directories on each computer.
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Bb]uild/
+**/[Bb]uilds/
+**/[Mm]emoryCaptures/
+**/[Rr]ecordings/
+
+# Local IDE files and generated solutions.
+**/.vs/
+**/.idea/
+**/.vscode/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.csproj.meta
+*.sln.meta
+*.slnx.meta
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# OS files and crash dumps.
+.DS_Store
+Thumbs.db
+Desktop.ini
+sysinfo.txt
+*.stackdump
+
+# Local credentials.
+.env
+.env.*
+!.env.example
+
+# Track Assets (including .meta), Packages and ProjectSettings.
