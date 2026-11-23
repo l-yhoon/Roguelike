@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ironclad
   m_EditorClassIdentifier: Assembly-CSharp::Roguelike.Combat.CharacterDefinition
   characterId: ironclad
-  displayName: Ironclad
-  portrait: {fileID: 21300000, guid: 295712710f3080a4180bddb064afcbc9, type: 3}
+  displayName: "\uC544\uC774\uC5B8\uD074\uB798\uB4DC"
+  portrait: {fileID: 21300000, guid: 159d9d209c424b84b90272a5bbcaa4be, type: 2}
   maxHealth: 80
   baseEnergy: 3

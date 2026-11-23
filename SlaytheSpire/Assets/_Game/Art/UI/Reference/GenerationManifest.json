@@ -1,0 +1,96 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "assets": [
+    {
+      "asset": "Ironclad",
+      "output": "Assets/_Game/Art/Characters/Ironclad.png",
+      "reference": "user-provided 43c8a5b1-c97a-4aab-9085-e6bb16424fdd.png",
+      "transparent": true,
+      "prompt": "Edit target: attached cropped Ironclad character sprite. Remove only the flat dark gray background and ground shadow, preserving the exact character identity, stance, long sword pointing left, red pants, bronze shoulder armor, proportions and hand-painted 2D game style. Reconstruct tiny clipped edges if needed. Full body and sword entirely in frame, tightly framed with a little transparent padding. Clean antialiased edges. No text, no background, genuine transparent alpha. This is a Unity character sprite, not a redesign."
+    },
+    {
+      "asset": "BattleBackground",
+      "output": "Assets/_Game/Art/Backgrounds/Act1Dungeon.png",
+      "reference": "user-provided 5d5062c3-5741-431e-b9b9-c23dde3eb364.png",
+      "transparent": false,
+      "prompt": "Edit target: attached Slay the Spire battle screenshot. Deliver only a clean 16:9 2D dungeon battle BACKGROUND plate matching this screenshot: ancient dark warm brown stone ruin, masonry, torchlight, stone floor and distant archways. Completely remove ALL UI including top bar, titlebar, frame, bottom cards, energy, buttons, characters, enemies, cursor, health bars, intent, text, watermarks, captions and relics. Reconstruct underlying floor and walls naturally. Keep open standing areas on lower left and lower right and room for a card hand at bottom. Keep the recognizable hand painted game background composition. No people or creatures, no text. Landscape 16:9."
+    },
+    {
+      "asset": "Energy",
+      "output": "Assets/_Game/Art/UI/Reference/Energy.png",
+      "reference": "user-provided 3b5b013f-d990-42bb-960b-ab0f3793201f.png",
+      "transparent": true,
+      "prompt": "Edit target: reference energy orb crop. Isolate and clean up ONLY the circular gold-orange glowing energy medallion with red ring and bronze outer rim. Remove the 3/3 text completely and reconstruct orange center smoothly so runtime text can be overlaid. Remove all surrounding background. Preserve hand-painted worn fantasy game UI style. One centered tightly framed full circular medallion on genuinely transparent background. No letters, no numbers."
+    },
+    {
+      "asset": "DrawPile",
+      "output": "Assets/_Game/Art/UI/Reference/DrawPile.png",
+      "reference": "user-provided f9492bd8-9c33-471d-887b-0fec28731a34.png",
+      "transparent": true,
+      "prompt": "Edit target: draw pile icon crop. Isolate ONLY the tilted cream parchment playing-card stack with red-brown sword motif. Remove scenery, black background, all count badges and numbers, including 5. Restore cropped card edges. Keep matching hand painted original fantasy game UI appearance. One complete card stack icon, tight framing, genuine transparent background. No letters or numbers."
+    },
+    {
+      "asset": "DiscardPile",
+      "output": "Assets/_Game/Art/UI/Reference/DiscardPile.png",
+      "reference": "user-provided 2e0bb50c-a306-45e2-bf53-4961944fcb8c.png",
+      "transparent": true,
+      "prompt": "Edit target: discard pile crop. Isolate ONLY the tilted icy blue playing-card stack with dark spiral motif. Remove all scenery and the red numeric badge including zero. Reconstruct clipped card edges. Retain hand painted fantasy game UI style. One complete tightly framed card stack icon on genuine transparent alpha. No letters or numbers."
+    },
+    {
+      "asset": "EndTurn",
+      "output": "Assets/_Game/Art/UI/Reference/EndTurn.png",
+      "reference": "user-provided 15ca31a7-60b1-4d61-a3fc-182e0325b29b.png",
+      "transparent": true,
+      "prompt": "Edit target: end turn button crop. Cleanly isolate the complete horizontally wide hexagonal button with slate blue center and layered worn brass/beige bevel border. Remove Korean label completely and reconstruct blank blue face for runtime text. Remove surrounding floor/background. Preserve shape and original hand painted fantasy game UI aesthetic. One tightly framed wide button on genuine transparent background, no text or numbers."
+    },
+    {
+      "asset": "Heart",
+      "output": "Assets/_Game/Art/UI/Reference/Heart.png",
+      "reference": "user-provided 81ef26fd-2518-4c04-9a7e-e708ea8830a6.png",
+      "transparent": true,
+      "prompt": "Reference: screenshot top status bar. Extract/reconstruct just the small red HEART icon before health 80/80. A simple plump red painted heart with subtle warm highlight and dark edge matching the screenshot, readable at 24px. Only one heart centered tightly in frame. Remove all UI bar, characters, text and numbers. Genuine transparent background."
+    },
+    {
+      "asset": "Gold",
+      "output": "Assets/_Game/Art/UI/Reference/Gold.png",
+      "reference": "user-provided 81ef26fd-2518-4c04-9a7e-e708ea8830a6.png",
+      "transparent": true,
+      "prompt": "Reference: screenshot top status bar. Extract/reconstruct just the small pale ivory/gold drawstring COIN POUCH icon immediately before gold 99. Match hand painted fantasy UI; tied sack with small gold coin embellishment. Only one pouch centered tightly in frame, readable at 28px. No digits, letters, bar, other icons, shadows on background. Genuine transparent background."
+    },
+    {
+      "asset": "PotionSlot",
+      "output": "Assets/_Game/Art/UI/Reference/PotionSlot.png",
+      "reference": "user-provided 81ef26fd-2518-4c04-9a7e-e708ea8830a6.png",
+      "transparent": true,
+      "prompt": "Reference screenshot top status bar. Extract/reconstruct exactly ONE empty potion slot symbol: small diagonal gray glass bottle silhouette outlined in pale silver, tilted upper right, like the three empty bottle slots on the screenshot. No liquid. Readable simple hand-painted fantasy UI icon. Only one empty bottle silhouette, centered tightly with transparent background. No bar, text, numbers, other objects."
+    },
+    {
+      "asset": "Floor",
+      "output": "Assets/_Game/Art/UI/Reference/Floor.png",
+      "reference": "user-provided 98c87e1e-02e2-49e7-9b95-6e512ed5dd31.png",
+      "transparent": true,
+      "prompt": "Edit target: top floor counter crop. Isolate/reconstruct ONLY the small ivory ascending staircase icon to the left of digit 1. Simple stepped staircase silhouette in warm cream with slight bevel and dark edge matching fantasy game UI. Remove digit, status bar and all background. One tightly framed staircase icon on genuine transparent background. No text or numbers."
+    },
+    {
+      "asset": "Map",
+      "output": "Assets/_Game/Art/UI/Reference/Map.png",
+      "reference": "user-provided e17d2cfa-e2cd-4885-a47e-321858de8a49.png",
+      "transparent": true,
+      "prompt": "Reference top-right UI crop. Extract/reconstruct ONLY the leftmost rolled parchment MAP icon with tiny red route/cross mark. Preserve hand painted cream parchment style with rolled corners. Do not include deck icon, gear, numbers, bar or window controls. One tightly framed complete map icon on genuine transparent background. No text or digits."
+    },
+    {
+      "asset": "Deck",
+      "output": "Assets/_Game/Art/UI/Reference/Deck.png",
+      "reference": "user-provided e17d2cfa-e2cd-4885-a47e-321858de8a49.png",
+      "transparent": true,
+      "prompt": "Reference top-right UI crop. Extract/reconstruct ONLY the middle DECK icon, a small layered cream card stack with brown ornamental swirl on its face. Remove the 10 count and all numeric badges. No map or gear, no toolbar, no text or digits. One tightly framed complete hand painted fantasy card-stack icon on genuine transparent background."
+    },
+    {
+      "asset": "Settings",
+      "output": "Assets/_Game/Art/UI/Reference/Settings.png",
+      "reference": "user-provided e17d2cfa-e2cd-4885-a47e-321858de8a49.png",
+      "transparent": true,
+      "prompt": "Reference top-right UI crop. Extract/reconstruct ONLY the rightmost pale blue-gray SETTINGS cogwheel icon, hand painted beveled fantasy UI gear with dark center hole. Remove window controls, bar, text, digits and all other icons. One complete tightly framed cogwheel on genuine transparent background, readable at 28px."
+    }
+  ]
+}

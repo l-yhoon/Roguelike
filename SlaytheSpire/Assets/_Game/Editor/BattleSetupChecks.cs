@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Roguelike.Core;
+using Roguelike.UI;
 using Object = UnityEngine.Object;
 
 namespace Roguelike.Editor
@@ -64,12 +66,14 @@ namespace Roguelike.Editor
                 setup.Player.SetEnergy(1);
                 var serialized = new SerializedObject(setup);
                 var energy = (Text)serialized.FindProperty("energyLabel").objectReferenceValue;
-                Require(energy.text == "ENERGY  1 / 3", "Energy UI did not refresh.");
+                string format = serialized.FindProperty("energyFormat").stringValue;
+                Require(energy.text == string.Format(format, 1, 3), "Energy UI did not refresh.");
                 setup.InitializeBattle();
                 Require(!ReferenceEquals(oldPlayer, setup.Player) && setup.Player.Combatant.CurrentHealth == 80, "Reset reused runtime state.");
                 Require(originalEnemy.MaxHealth == 30, "Runtime changed the definition.");
                 oldPlayer.SetEnergy(0);
-                Require(energy.text == "ENERGY  3 / 3", "Old state retained a UI subscription.");
+                Require(energy.text == string.Format(format, 3, 3), "Old state retained a UI subscription.");
+                CheckHud(setup);
                 Finish(null);
             }
             catch (Exception exception) { Finish(exception); }
@@ -118,6 +122,44 @@ namespace Roguelike.Editor
             }
         }
 
+        private static void CheckHud(BattleSetup setup)
+        {
+            var hud = Object.FindFirstObjectByType<BattleHud>();
+            if (hud == null) throw new Exception("Reference HUD is missing.");
+            var run = Object.FindFirstObjectByType<RunState>();
+            var serialized = new SerializedObject(hud);
+            Text Label(string field) => (Text)serialized.FindProperty(field).objectReferenceValue;
+            Require(Label("health").text == "80/80", "Top health did not bind.");
+            setup.Player.Combatant.SetHealth(47);
+            Require(Label("health").text == "47/80", "Top health did not update.");
+            Require(Label("drawCount").text == "10" && Label("discardCount").text == "0", "Initial pile counts incorrect.");
+            setup.Piles.Draw(3);
+            Require(Label("drawCount").text == "7" && setup.Piles.Hand.Count == 3, "Draw count did not update.");
+            setup.Piles.DiscardFromHand(0);
+            Require(Label("discardCount").text == "1" && setup.Piles.Hand.Count == 2, "Discard count did not update.");
+            Require(run.Deck.Count == 10 && Label("deckCount").text == "10", "Combat changed the run deck.");
+            run.SetGold(125);
+            run.SetFloor(2);
+            Require(Label("gold").text == "125" && Label("floor").text == "2", "Run values did not refresh.");
+            var popup = (GameObject)serialized.FindProperty("popup").objectReferenceValue;
+            var bar = hud.transform.Find("Top Status Bar");
+            bar.Find("Deck").GetComponent<Button>().onClick.Invoke();
+            Require(popup.activeSelf && Label("popupBody").text.Contains("타격"), "Deck button failed.");
+            hud.ClosePopup();
+            bar.Find("Map").GetComponent<Button>().onClick.Invoke();
+            Require(popup.activeSelf && Label("popupBody").text.Contains("2층"), "Map button failed.");
+            bar.Find("Settings").GetComponent<Button>().onClick.Invoke();
+            var settings = (GameObject)serialized.FindProperty("settings").objectReferenceValue;
+            Require(settings.activeSelf, "Settings panel failed.");
+            hud.SetVolume(.35f);
+            Require(Mathf.Approximately(AudioListener.volume, .35f), "Volume setting failed.");
+            hud.SetVolume(1);
+            hud.ClosePopup();
+            setup.InitializeBattle();
+            Require(Label("health").text == "80/80" && Label("drawCount").text == "10", "HUD reset failed.");
+            Require(run.Gold == 125 && run.Floor == 2, "Battle reset erased run state.");
+        }
+
         private static void Require(bool condition, string message)
         {
             if (!condition) throw new Exception(message);
@@ -127,7 +169,7 @@ namespace Roguelike.Editor
             SessionState.SetBool(Running, false);
             EditorApplication.update -= Tick;
             if (exception != null) Debug.LogException(exception);
-            else Debug.Log("BATTLE_SETUP_CHECKS_PASSED: pools, state isolation, scene startup, UI updates, reset.");
+            else Debug.Log("BATTLE_SETUP_CHECKS_PASSED: pools, state isolation, scene startup, HUD values, card pile counts, popup buttons, settings, reset.");
             EditorApplication.Exit(exception == null ? 0 : 1);
         }
     }

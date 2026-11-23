@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: e7bc3903b8032dd4b83e5e5232c9a971
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7193481138182468868
+    second: EndTurn_0
+  - first:
+      213: 8931980178548734698
+    second: EndTurn_1
+  - first:
+      213: -6149199882891541852
+    second: EndTurn_2
+  - first:
+      213: 8411968290871209232
+    second: EndTurn_3
+  - first:
+      213: 3690143830114383885
+    second: EndTurn_4
+  - first:
+      213: 7050202941187373724
+    second: EndTurn_5
+  - first:
+      213: -7621874892156251716
+    second: EndTurn_6
+  - first:
+      213: -3373336030339875346
+    second: EndTurn_7
+  - first:
+      213: 7945812947410504376
+    second: EndTurn_8
+  - first:
+      213: -8139851251450646735
+    second: EndTurn_9
+  - first:
+      213: -3568123218923156270
+    second: EndTurn_10
+  - first:
+      213: 2782799192843460451
+    second: EndTurn_11
+  - first:
+      213: 7267707082924004152
+    second: EndTurn_12
+  - first:
+      213: -2464403144962702083
+    second: EndTurn_13
+  - first:
+      213: -754224819443452473
+    second: EndTurn_14
+  - first:
+      213: 6190557096921803588
+    second: EndTurn_15
+  - first:
+      213: 363091986474650147
+    second: EndTurn_16
+  - first:
+      213: -8552157101065153288
+    second: EndTurn_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: EndTurn_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1957
+        height: 784
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfa492c740f9b2c90800000000000000
+      internalID: -7193481138182468868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_1
+      rect:
+        serializedVersion: 2
+        x: 972
+        y: 782
+        width: 17
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea3a3316a4c4fb70800000000000000
+      internalID: 8931980178548734698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_2
+      rect:
+        serializedVersion: 2
+        x: 1303
+        y: 756
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a2406f4947a9aaa0800000000000000
+      internalID: -6149199882891541852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_3
+      rect:
+        serializedVersion: 2
+        x: 1323
+        y: 753
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01d6a3f87905db470800000000000000
+      internalID: 8411968290871209232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_4
+      rect:
+        serializedVersion: 2
+        x: 1804
+        y: 750
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0831142346063330800000000000000
+      internalID: 3690143830114383885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_5
+      rect:
+        serializedVersion: 2
+        x: 1824
+        y: 733
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9a33efa83a57d160800000000000000
+      internalID: 7050202941187373724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 572
+        width: 29
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb1de820b29a93690800000000000000
+      internalID: -7621874892156251716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 612
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eedb09bc0c08f21d0800000000000000
+      internalID: -3373336030339875346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_8
+      rect:
+        serializedVersion: 2
+        x: 1874
+        y: 520
+        width: 97
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ba4a16e6c2354e60800000000000000
+      internalID: 7945812947410504376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_9
+      rect:
+        serializedVersion: 2
+        x: 1946
+        y: 548
+        width: 9
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13fe3c0e960790f80800000000000000
+      internalID: -8139851251450646735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_10
+      rect:
+        serializedVersion: 2
+        x: 1924
+        y: 499
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dc034d46da7b7ec0800000000000000
+      internalID: -3568123218923156270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_11
+      rect:
+        serializedVersion: 2
+        x: 1934
+        y: 485
+        width: 39
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36f9daa3f1d7e9620800000000000000
+      internalID: 2782799192843460451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_12
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 19
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 833964106151cd460800000000000000
+      internalID: 7267707082924004152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_13
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 26
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df48429856eaccdd0800000000000000
+      internalID: -2464403144962702083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_14
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 20
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c53a44d5847885f0800000000000000
+      internalID: -754224819443452473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_15
+      rect:
+        serializedVersion: 2
+        x: 1202
+        y: 23
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44b2cc371e649e550800000000000000
+      internalID: 6190557096921803588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_16
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 22
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32acc9aec36f90500800000000000000
+      internalID: 363091986474650147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EndTurn_17
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 18
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f45da78d62a05980800000000000000
+      internalID: -8552157101065153288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      EndTurn_0: -7193481138182468868
+      EndTurn_1: 8931980178548734698
+      EndTurn_10: -3568123218923156270
+      EndTurn_11: 2782799192843460451
+      EndTurn_12: 7267707082924004152
+      EndTurn_13: -2464403144962702083
+      EndTurn_14: -754224819443452473
+      EndTurn_15: 6190557096921803588
+      EndTurn_16: 363091986474650147
+      EndTurn_17: -8552157101065153288
+      EndTurn_2: -6149199882891541852
+      EndTurn_3: 8411968290871209232
+      EndTurn_4: 3690143830114383885
+      EndTurn_5: 7050202941187373724
+      EndTurn_6: -7621874892156251716
+      EndTurn_7: -3373336030339875346
+      EndTurn_8: 7945812947410504376
+      EndTurn_9: -8139851251450646735
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,663 @@
+fileFormatVersion: 2
+guid: ee8e3cd0e0aec944a8af3b4b85df92c8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1029139767196064255
+    second: DiscardPile_0
+  - first:
+      213: 2540091667455447567
+    second: DiscardPile_1
+  - first:
+      213: -706224892008084587
+    second: DiscardPile_2
+  - first:
+      213: 8691549195296574306
+    second: DiscardPile_3
+  - first:
+      213: 8883194077893232177
+    second: DiscardPile_4
+  - first:
+      213: 3405877461604916465
+    second: DiscardPile_5
+  - first:
+      213: 6783973621571303767
+    second: DiscardPile_6
+  - first:
+      213: -2366288294834509516
+    second: DiscardPile_7
+  - first:
+      213: 6384105457766946587
+    second: DiscardPile_8
+  - first:
+      213: -3121233594744921104
+    second: DiscardPile_9
+  - first:
+      213: 2054334342295120821
+    second: DiscardPile_10
+  - first:
+      213: -2240620764832732543
+    second: DiscardPile_11
+  - first:
+      213: 6002229708782528883
+    second: DiscardPile_12
+  - first:
+      213: -5467606616246998103
+    second: DiscardPile_13
+  - first:
+      213: -5342702668953433221
+    second: DiscardPile_14
+  - first:
+      213: -3274253483576750243
+    second: DiscardPile_15
+  - first:
+      213: -8771700485909803610
+    second: DiscardPile_16
+  - first:
+      213: -4817421032450002458
+    second: DiscardPile_17
+  - first:
+      213: -7666223231341365620
+    second: DiscardPile_18
+  - first:
+      213: -4588523142594362210
+    second: DiscardPile_19
+  - first:
+      213: 1123141324741109482
+    second: DiscardPile_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DiscardPile_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1252
+        height: 1186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 106ec0895d2c7b1f0800000000000000
+      internalID: -1029139767196064255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_1
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 1183
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f029c9fd9e7304320800000000000000
+      internalID: 2540091667455447567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_2
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1171
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59bc154d33cf236f0800000000000000
+      internalID: -706224892008084587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_3
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 1127
+        width: 19
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26b0c7d71f59e9870800000000000000
+      internalID: 8691549195296574306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_4
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 986
+        width: 116
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1360eabd2f1774b70800000000000000
+      internalID: 8883194077893232177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_5
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 942
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fc5877918b144f20800000000000000
+      internalID: 3405877461604916465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 560
+        width: 5
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 759b067d014852e50800000000000000
+      internalID: 6783973621571303767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_7
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 586
+        width: 74
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 439693e3551492fd0800000000000000
+      internalID: -2366288294834509516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_8
+      rect:
+        serializedVersion: 2
+        x: 1220
+        y: 706
+        width: 48
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b17d4d2e616e89850800000000000000
+      internalID: 6384105457766946587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_9
+      rect:
+        serializedVersion: 2
+        x: 1128
+        y: 477
+        width: 23
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3a63425962fa4d0800000000000000
+      internalID: -3121233594744921104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_10
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 224
+        width: 28
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bbe2623336728c10800000000000000
+      internalID: 2054334342295120821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_11
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 154
+        width: 74
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18ae7c32947b7e0e0800000000000000
+      internalID: -2240620764832732543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_12
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 117
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37967447e143c4350800000000000000
+      internalID: 6002229708782528883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_13
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 68
+        width: 68
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9aba50b40c82f14b0800000000000000
+      internalID: -5467606616246998103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_14
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 57
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7bcf7cba38ead5b0800000000000000
+      internalID: -5342702668953433221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_15
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 53
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5f82deedc38f82d0800000000000000
+      internalID: -3274253483576750243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_16
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 55
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ad893de1e8a44680800000000000000
+      internalID: -8771700485909803610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_17
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 49
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e172534815152db0800000000000000
+      internalID: -4817421032450002458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_18
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 23
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c86fc07a69a1c9590800000000000000
+      internalID: -7666223231341365620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_19
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 17
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e94010a438a4250c0800000000000000
+      internalID: -4588523142594362210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DiscardPile_20
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 15
+        width: 18
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae661cd8513369f00800000000000000
+      internalID: 1123141324741109482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      DiscardPile_0: -1029139767196064255
+      DiscardPile_1: 2540091667455447567
+      DiscardPile_10: 2054334342295120821
+      DiscardPile_11: -2240620764832732543
+      DiscardPile_12: 6002229708782528883
+      DiscardPile_13: -5467606616246998103
+      DiscardPile_14: -5342702668953433221
+      DiscardPile_15: -3274253483576750243
+      DiscardPile_16: -8771700485909803610
+      DiscardPile_17: -4817421032450002458
+      DiscardPile_18: -7666223231341365620
+      DiscardPile_19: -4588523142594362210
+      DiscardPile_2: -706224892008084587
+      DiscardPile_20: 1123141324741109482
+      DiscardPile_3: 8691549195296574306
+      DiscardPile_4: 8883194077893232177
+      DiscardPile_5: 3405877461604916465
+      DiscardPile_6: 6783973621571303767
+      DiscardPile_7: -2366288294834509516
+      DiscardPile_8: 6384105457766946587
+      DiscardPile_9: -3121233594744921104
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

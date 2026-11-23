@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Roguelike.UI;
 
 namespace Roguelike.Editor
 {
@@ -14,6 +15,8 @@ namespace Roguelike.Editor
         {
             EditorSceneManager.OpenScene(BattleSceneTools.ScenePath);
             Object.FindFirstObjectByType<BattleSetup>().InitializeBattle();
+            var hud = Object.FindFirstObjectByType<BattleHud>();
+            if (hud != null) hud.BindBattle();
             var camera = Camera.main;
             var canvas = Object.FindFirstObjectByType<Canvas>();
             var target = new RenderTexture(1280, 720, 24);

@@ -1,6 +1,8 @@
 using Roguelike.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Roguelike.Core;
+using Roguelike.Cards;
 
 namespace Roguelike.Combat
 {
@@ -13,6 +15,12 @@ namespace Roguelike.Combat
         [SerializeField] private EnemyIntentView intentView;
         [SerializeField] private Text energyLabel;
         [SerializeField] private Text statusLabel;
+        [SerializeField] private RunState runState;
+        [SerializeField] private string energyFormat = "ENERGY  {0} / {1}";
+        [SerializeField] private bool showReadyMessage = true;
+        public string CharacterName => character == null ? "" : character.DisplayName;
+        public CardPileState Piles { get; private set; }
+        public event System.Action Initialized;
         public PlayerBattleState Player { get; private set; }
         public CombatantState Enemy { get; private set; }
         public EnemyDefinition SelectedEnemy { get; private set; }
@@ -45,6 +53,7 @@ namespace Roguelike.Combat
             }
 
             Player = new PlayerBattleState(character);
+            if (runState != null) Piles = new CardPileState(runState.Deck);
             SelectedEnemy = selected;
             Enemy = new CombatantState(selected.MaxHealth);
             CurrentEnemyAction = selected.GetAction(0);
@@ -55,10 +64,11 @@ namespace Roguelike.Combat
             intentView.Show(CurrentEnemyAction);
             Player.Changed += RefreshEnergy;
             RefreshEnergy();
-            statusLabel.text = "Battle setup ready  |  Card and turn systems come next";
+            statusLabel.text = showReadyMessage ? "Battle setup ready  |  Card and turn systems come next" : "";
+            Initialized?.Invoke();
         }
 
-        private void RefreshEnergy() => energyLabel.text = $"ENERGY  {Player.CurrentEnergy} / {Player.BaseEnergy}";
+        private void RefreshEnergy() => energyLabel.text = string.Format(energyFormat, Player.CurrentEnergy, Player.BaseEnergy);
         private void Fail(string message)
         {
             if (statusLabel != null) statusLabel.text = message;
@@ -73,6 +83,7 @@ namespace Roguelike.Combat
             Enemy = null;
             SelectedEnemy = null;
             CurrentEnemyAction = null;
+            Piles = null;
         }
         private void OnDestroy() => ReleaseState();
     }
