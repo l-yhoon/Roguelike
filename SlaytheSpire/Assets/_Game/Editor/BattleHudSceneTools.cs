@@ -48,6 +48,7 @@ namespace Roguelike.Editor
             EditorSceneManager.OpenScene(BattleSceneTools.ScenePath);
             font = AssetDatabase.LoadAssetAtPath<Font>(Root + "Art/Fonts/NotoSansCJKkr-Regular.otf");
             var canvas = Object.FindFirstObjectByType<Canvas>();
+            var content = canvas.transform.Find(BattleResponsiveLayout.ViewportName) ?? canvas.transform;
             var setup = Object.FindFirstObjectByType<BattleSetup>();
             var serializedSetup = new SerializedObject(setup);
             var player = (CombatantView)serializedSetup.FindProperty("playerView").objectReferenceValue;
@@ -56,10 +57,10 @@ namespace Roguelike.Editor
             // Remove the previous prototype decorations, keeping combatant instances.
             foreach (string name in new[] { "Ground", "Top Bar", "Title", "Energy", "Hand Area", "Hand Placeholder", "Status", "New Encounter", "End Turn Placeholder", "Reference HUD", "Dungeon Background", "HUD Popup" })
             {
-                var child = canvas.transform.Find(name);
+                var child = content.Find(name);
                 if (child != null) Object.DestroyImmediate(child.gameObject);
             }
-            var bg = Image(canvas.transform, "Dungeon Background", Vector2.zero, new Vector2(1280, 720), Color.white,
+            var bg = Image(content, "Dungeon Background", Vector2.zero, new Vector2(1280, 720), Color.white,
                 AssetDatabase.LoadAssetAtPath<Sprite>(Root + "Art/UI/Reference/BattleBackground.sprite.asset"));
             Stretch(bg.rectTransform);
             bg.transform.SetAsFirstSibling();
@@ -67,7 +68,7 @@ namespace Roguelike.Editor
             StyleCombatant(enemy, new Vector2(350, -82), false);
             intent.GetComponent<RectTransform>().anchoredPosition = new Vector2(350, 94);
             foreach (var text in intent.GetComponentsInChildren<Text>()) { text.font = font; text.fontSize = 20; }
-            var hudRoot = Rect(canvas.transform, "Reference HUD", Vector2.zero, new Vector2(1280, 720));
+            var hudRoot = Rect(content, "Reference HUD", Vector2.zero, new Vector2(1280, 720));
             Stretch(hudRoot);
             var hud = hudRoot.gameObject.AddComponent<BattleHud>();
             var run = setup.GetComponent<RunState>();
@@ -128,7 +129,8 @@ namespace Roguelike.Editor
             // Hidden status is retained for actionable initialization errors only.
             var status = Label(hudRoot, "Status", "", new Vector2(0, -347), new Vector2(1100, 25), 15);
             BattleSceneTools.Set(setup, "statusLabel", status);
-            CreatePopup(canvas.transform, hud);
+            CreatePopup(content, hud);
+            BattleResponsiveLayout.Configure(canvas);
             AssetDatabase.SaveAssets();
             EditorSceneManager.SaveScene(canvas.gameObject.scene, BattleSceneTools.ScenePath);
             Debug.Log("REFERENCE_HUD_APPLIED");
@@ -149,7 +151,7 @@ namespace Roguelike.Editor
             name.rectTransform.anchoredPosition = new Vector2(0, -159);
             var bar = view.transform.Find("Health Background").GetComponent<Image>();
             bar.rectTransform.sizeDelta = new Vector2(160, 10);
-            bar.rectTransform.anchoredPosition = new Vector2(0, -135);
+            bar.rectTransform.anchoredPosition = new Vector2(player ? 70 : 0, -135);
             bar.color = new Color(.18f, .07f, .05f);
             var fill = bar.transform.Find("Health Fill").GetComponent<Image>();
             fill.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
