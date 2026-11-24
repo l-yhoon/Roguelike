@@ -61,6 +61,7 @@ namespace Roguelike.Combat
             enemyView.gameObject.SetActive(true);
             playerView.Bind(character.DisplayName, character.Portrait, Player.Combatant);
             enemyView.Bind(selected.DisplayName, selected.Portrait, Enemy);
+            intentView.BindTarget(enemyView);
             intentView.Show(CurrentEnemyAction);
             Player.Changed += RefreshEnergy;
             RefreshEnergy();

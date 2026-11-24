@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Roguelike.UI;
 
 namespace Roguelike.Editor
 {
@@ -104,11 +105,13 @@ namespace Roguelike.Editor
             // Retain the user's +70 local health-bar offset under the hero's body.
             Anchor(Required(stage, "Player"), new Vector2(.20f, .48f), Vector2.zero);
             Anchor(Required(stage, "Enemy"), new Vector2(.75f, .48f), Vector2.zero);
-            Anchor(Required(stage, "Enemy Intent"), new Vector2(.75f, .48f), new Vector2(0, 150));
+            var intent = stage.GetComponentInChildren<EnemyIntentView>(true);
+            intent.BindTarget(Required(stage, "Enemy").GetComponent<CombatantView>());
             foreach (var component in stage.GetComponentsInChildren<Component>(true))
                 if (PrefabUtility.IsPartOfPrefabInstance(component))
                     PrefabUtility.RecordPrefabInstancePropertyModifications(component);
             Canvas.ForceUpdateCanvases();
+            intent.RefreshPosition();
         }
 
         private static void Place(Transform parent, string name, Vector2 anchor, Vector2 offset, Vector2 size)

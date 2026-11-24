@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Roguelike.UI;
 
 namespace Roguelike.Editor
 {
@@ -48,10 +49,32 @@ namespace Roguelike.Editor
                     AssertInside(stage, (RectTransform)child, 8, 0);
             AssertInside(stage, (RectTransform)stage.Find("Player"), 8);
             AssertInside(stage, (RectTransform)stage.Find("Enemy"), 8);
+            AssertIntentAlignment(stage.GetComponentInChildren<EnemyIntentView>(true));
             Require(((RectTransform)hud.Find("DrawPile")).anchorMin == Vector2.zero,
                 "Draw pile must use a bottom-left anchor.");
             Require(((RectTransform)hud.Find("DiscardPile")).anchorMin == Vector2.right,
                 "Discard pile must use a bottom-right anchor.");
+        }
+
+        public static void AssertIntentAlignment(EnemyIntentView intent)
+        {
+            Require(intent != null && intent.transform.parent.GetComponent<CombatantView>() != null,
+                "Intent must belong to its enemy, not the battle viewport.");
+            var enemy = intent.transform.parent.GetComponent<CombatantView>();
+            var label = intent.GetComponent<Text>();
+            Require(label.isActiveAndEnabled && !string.IsNullOrEmpty(label.text), "Intent text is hidden.");
+            label.cachedTextGenerator.Populate(label.text, label.GetGenerationSettings(label.rectTransform.rect.size));
+            Require(label.cachedTextGenerator.vertexCount > 4, "Intent text has no visible glyph geometry.");
+            Require(enemy.TryGetHeadPosition(out Vector3 head), "Enemy portrait has no visible head position.");
+            var corners = new Vector3[4];
+            ((RectTransform)intent.transform).GetWorldCorners(corners);
+            Vector3 localBottom = enemy.transform.InverseTransformPoint((corners[0] + corners[3]) * .5f);
+            Vector3 localHead = enemy.transform.InverseTransformPoint(head);
+            float gap = localBottom.y - localHead.y;
+            Require(Mathf.Abs(localBottom.x - localHead.x) < .5f,
+                "Intent is not horizontally centered above its enemy.");
+            Require(Mathf.Abs(gap - intent.HeadGap) < .5f && gap >= 6 && gap <= 16,
+                $"Intent must have a small gap immediately above the head, got {gap}.");
         }
 
         private static void AssertInside(RectTransform parent, RectTransform element, float margin, float verticalMargin = -1)

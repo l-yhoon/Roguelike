@@ -54,6 +54,7 @@ namespace Roguelike.Editor
                 Canvas.ForceUpdateCanvases();
                 LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)canvas.transform);
                 Canvas.ForceUpdateCanvases();
+                Object.FindFirstObjectByType<EnemyIntentView>().RefreshPosition();
                 validate?.Invoke(canvas);
                 camera.Render();
                 RenderTexture.active = target;

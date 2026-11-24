@@ -74,6 +74,7 @@ namespace Roguelike.Editor
                 oldPlayer.SetEnergy(0);
                 Require(energy.text == string.Format(format, 3, 3), "Old state retained a UI subscription.");
                 CheckHud(setup);
+                CheckIntentFollow();
                 Finish(null);
             }
             catch (Exception exception) { Finish(exception); }
@@ -164,12 +165,51 @@ namespace Roguelike.Editor
         {
             if (!condition) throw new Exception(message);
         }
+
+        private static void CheckIntentFollow()
+        {
+            var intent = Object.FindFirstObjectByType<EnemyIntentView>();
+            BattleLayoutChecks.AssertIntentAlignment(intent);
+            var enemy = intent.transform.parent.GetComponent<CombatantView>();
+            var enemyRect = (RectTransform)enemy.transform;
+            Vector2 originalPosition = enemyRect.anchoredPosition;
+            Vector3 before = enemyRect.parent.InverseTransformPoint(intent.transform.position);
+            enemyRect.anchoredPosition += new Vector2(70, 35);
+            intent.RefreshPosition();
+            Vector3 after = enemyRect.parent.InverseTransformPoint(intent.transform.position);
+            Require(Vector2.Distance((Vector2)(after - before), new Vector2(70, 35)) < .5f,
+                "Intent did not follow enemy movement.");
+            BattleLayoutChecks.AssertIntentAlignment(intent);
+            var serialized = new SerializedObject(enemy);
+            var portrait = (Image)serialized.FindProperty("portrait").objectReferenceValue;
+            Vector2 originalSize = portrait.rectTransform.sizeDelta;
+            Sprite originalSprite = portrait.sprite;
+            try
+            {
+                portrait.rectTransform.sizeDelta *= 1.4f;
+                Canvas.ForceUpdateCanvases();
+                intent.RefreshPosition();
+                BattleLayoutChecks.AssertIntentAlignment(intent);
+                Require(Mathf.Abs(intent.transform.localPosition.y - (after.y - enemyRect.localPosition.y)) > 1,
+                    "Intent did not follow portrait resizing.");
+                portrait.sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/_Game/Art/UI/Reference/Ironclad.sprite.asset");
+                intent.RefreshPosition();
+                BattleLayoutChecks.AssertIntentAlignment(intent);
+            }
+            finally
+            {
+                portrait.sprite = originalSprite;
+                portrait.rectTransform.sizeDelta = originalSize;
+                enemyRect.anchoredPosition = originalPosition;
+                intent.RefreshPosition();
+            }
+        }
         private static void Finish(Exception exception)
         {
             SessionState.SetBool(Running, false);
             EditorApplication.update -= Tick;
             if (exception != null) Debug.LogException(exception);
-            else Debug.Log("BATTLE_SETUP_CHECKS_PASSED: pools, state isolation, scene startup, HUD values, card pile counts, popup buttons, settings, reset.");
+            else Debug.Log("BATTLE_SETUP_CHECKS_PASSED: pools, state isolation, HUD, reset, intent follows enemy movement, resizing and sprite changes.");
             EditorApplication.Exit(exception == null ? 0 : 1);
         }
     }

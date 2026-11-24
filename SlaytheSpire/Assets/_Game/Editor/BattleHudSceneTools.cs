@@ -66,7 +66,6 @@ namespace Roguelike.Editor
             bg.transform.SetAsFirstSibling();
             StyleCombatant(player, new Vector2(-350, -82), true);
             StyleCombatant(enemy, new Vector2(350, -82), false);
-            intent.GetComponent<RectTransform>().anchoredPosition = new Vector2(350, 94);
             foreach (var text in intent.GetComponentsInChildren<Text>()) { text.font = font; text.fontSize = 20; }
             var hudRoot = Rect(content, "Reference HUD", Vector2.zero, new Vector2(1280, 720));
             Stretch(hudRoot);
