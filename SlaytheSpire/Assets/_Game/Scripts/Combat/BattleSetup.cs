@@ -10,6 +10,8 @@ namespace Roguelike.Combat
 
     public sealed class BattleSetup : MonoBehaviour
     {
+        private const int CardsPerTurn = 5;
+
         [SerializeField] private CharacterDefinition character;
         [SerializeField] private EnemyPool enemyPool;
         [SerializeField] private CombatantView playerView;
@@ -59,6 +61,7 @@ namespace Roguelike.Combat
 
             endTurnFrame = Time.frameCount;
             SetPhase(BattlePhase.EnemyTurn);
+            Piles?.DiscardHand();
         }
 
         public void InitializeBattle()
@@ -106,12 +109,17 @@ namespace Roguelike.Combat
 
         private void BeginPlayerTurn()
         {
+            if (Phase != BattlePhase.Inactive && Phase != BattlePhase.EnemyTurn) return;
+
             Player.Combatant.SetBlock(0);
             if (Phase == BattlePhase.Victory || Phase == BattlePhase.Defeat) return;
 
             Player.SetEnergy(Player.BaseEnergy);
             if (Phase == BattlePhase.Inactive || Phase == BattlePhase.EnemyTurn)
+            {
                 SetPhase(BattlePhase.PlayerTurn);
+                Piles?.Draw(CardsPerTurn);
+            }
         }
 
         private void ResolveEnemyTurn()

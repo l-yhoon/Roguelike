@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Roguelike.Cards;
 using Roguelike.Combat;
 using Roguelike.Core;
 using UnityEngine;
@@ -11,6 +13,7 @@ namespace Roguelike.UI
     {
         [SerializeField] private BattleSetup battle;
         [SerializeField] private RunState run;
+        [SerializeField] private CardDefinition[] cardDefinitions = Array.Empty<CardDefinition>();
         [SerializeField] private Text playerName;
         [SerializeField] private Text characterName;
         [SerializeField] private Text health;
@@ -27,7 +30,8 @@ namespace Roguelike.UI
         [SerializeField] private Slider volume;
         [SerializeField] private Button[] potionButtons;
         private PlayerBattleState observedPlayer;
-        private Roguelike.Cards.CardPileState observedPiles;
+        private CardPileState observedPiles;
+        private BattleHandView handView;
 
         private void OnEnable()
         {
@@ -40,6 +44,7 @@ namespace Roguelike.UI
             battle.Initialized -= BindBattle;
             run.Changed -= Refresh;
             UnbindBattle();
+            handView?.Render(Array.Empty<string>());
         }
         public void BindBattle()
         {
@@ -47,13 +52,14 @@ namespace Roguelike.UI
             observedPlayer = battle.Player;
             observedPiles = battle.Piles;
             if (observedPlayer != null) observedPlayer.Combatant.Changed += Refresh;
-            if (observedPiles != null) observedPiles.Changed += Refresh;
+            if (observedPiles != null) observedPiles.Changed += RefreshPiles;
             Refresh();
+            RefreshPiles();
         }
         private void UnbindBattle()
         {
             if (observedPlayer != null) observedPlayer.Combatant.Changed -= Refresh;
-            if (observedPiles != null) observedPiles.Changed -= Refresh;
+            if (observedPiles != null) observedPiles.Changed -= RefreshPiles;
             observedPlayer = null;
             observedPiles = null;
         }
@@ -66,8 +72,6 @@ namespace Roguelike.UI
             gold.text = run.Gold.ToString();
             floor.text = run.Floor.ToString();
             deckCount.text = run.Deck.Count.ToString();
-            drawCount.text = (observedPiles?.DrawPile.Count ?? 0).ToString();
-            discardCount.text = (observedPiles?.DiscardPile.Count ?? 0).ToString();
             for (int i = 0; i < potionButtons.Length; i++)
             {
                 var label = potionButtons[i].GetComponentInChildren<Text>();
@@ -76,10 +80,17 @@ namespace Roguelike.UI
                 potionButtons[i].GetComponent<Image>().color = occupied ? new Color(.75f, .4f, .85f) : Color.white;
             }
         }
+        private void RefreshPiles()
+        {
+            drawCount.text = (observedPiles?.DrawPile.Count ?? 0).ToString();
+            discardCount.text = (observedPiles?.DiscardPile.Count ?? 0).ToString();
+            handView ??= new BattleHandView(transform, popupBody.font, FindCard);
+            handView.Render(observedPiles?.Hand ?? Array.Empty<string>());
+        }
         public void ShowMap() => Show("지도", $"1막 · {run.Floor}층\n\n아직 생성된 경로가 없습니다.");
         public void ShowDeck() => Show("전체 카드", CardList(run.Deck));
-        public void ShowDraw() => Show("뽑을 카드", observedPiles == null ? "" : CardList(observedPiles.DrawPile));
-        public void ShowDiscard() => Show("버린 카드", observedPiles == null ? "" : CardList(observedPiles.DiscardPile));
+        public void ShowDraw() => Show("뽑을 카드", CardList(observedPiles?.DrawPile ?? Array.Empty<string>()));
+        public void ShowDiscard() => Show("버린 카드", CardList(observedPiles?.DiscardPile ?? Array.Empty<string>()));
         public void ShowPotion(int slot)
         {
             string value = slot < run.PotionSlots ? run.GetPotion(slot) : "";
@@ -97,23 +108,31 @@ namespace Roguelike.UI
         public void ClosePopup() => popup.SetActive(false);
         private void Show(string title, string body)
         {
+            handView?.HidePreview();
             popupTitle.text = title;
             popupBody.text = body;
             settings.SetActive(false);
             popup.SetActive(true);
             popup.transform.SetAsLastSibling();
         }
-        private static string CardList(IReadOnlyList<string> cards)
+        private CardDefinition FindCard(string id)
+        {
+            foreach (var card in cardDefinitions)
+                if (card != null && card.Id == id) return card;
+            return null;
+        }
+        private string CardList(IReadOnlyList<string> cards)
         {
             if (cards.Count == 0) return "카드가 없습니다.";
             var counts = new Dictionary<string, int>();
             for (int i = 0; i < cards.Count; i++)
             {
-                string name = RunState.CardName(cards[i]);
-                counts[name] = counts.TryGetValue(name, out int count) ? count + 1 : 1;
+                string id = cards[i];
+                counts[id] = counts.TryGetValue(id, out int count) ? count + 1 : 1;
             }
             var text = new StringBuilder($"총 {cards.Count}장\n\n");
-            foreach (var entry in counts) text.AppendLine($"{entry.Key}  × {entry.Value}");
+            foreach (var entry in counts)
+                text.AppendLine($"{FindCard(entry.Key)?.DisplayName ?? RunState.CardName(entry.Key)}  × {entry.Value}");
             return text.ToString();
         }
     }

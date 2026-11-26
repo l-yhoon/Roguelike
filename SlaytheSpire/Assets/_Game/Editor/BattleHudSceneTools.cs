@@ -1,4 +1,5 @@
 using System.IO;
+using Roguelike.Cards;
 using Roguelike.Combat;
 using Roguelike.Core;
 using Roguelike.UI;
@@ -76,6 +77,16 @@ namespace Roguelike.Editor
             StringValue(setup, "energyFormat", "{0}/{1}");
             BattleSceneTools.Set(hud, "battle", setup);
             BattleSceneTools.Set(hud, "run", run);
+            var serializedHud = new SerializedObject(hud);
+            var definitions = serializedHud.FindProperty("cardDefinitions");
+            string[] definitionGuids = AssetDatabase.FindAssets("t:CardDefinition", new[] { Root + "Data/Cards" });
+            definitions.arraySize = definitionGuids.Length;
+            for (int i = 0; i < definitionGuids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(definitionGuids[i]);
+                definitions.GetArrayElementAtIndex(i).objectReferenceValue = AssetDatabase.LoadAssetAtPath<CardDefinition>(path);
+            }
+            serializedHud.ApplyModifiedPropertiesWithoutUndo();
 
             var bar = Image(hudRoot, "Top Status Bar", new Vector2(0, 333), new Vector2(1280, 54), new Color(.19f, .23f, .25f, .97f));
             bar.rectTransform.anchorMin = new Vector2(0, 1);
@@ -119,7 +130,7 @@ namespace Roguelike.Editor
             BattleSceneTools.Set(setup, "energyLabel", energyText);
             var draw = IconButton(hudRoot, "DrawPile", new Vector2(-594, -311), new Vector2(66, 82), hud.ShowDraw);
             var discard = IconButton(hudRoot, "DiscardPile", new Vector2(594, -311), new Vector2(66, 82), hud.ShowDiscard);
-            CountBadge(hud, "drawCount", draw.transform, new Vector2(24, -28), "10");
+            CountBadge(hud, "drawCount", draw.transform, new Vector2(24, -28), "5");
             CountBadge(hud, "discardCount", discard.transform, new Vector2(-24, -28), "0");
             var end = IconButton(hudRoot, "EndTurn", new Vector2(520, -235), new Vector2(166, 65), null);
             Label(end.transform, "End Turn Label", "턴 종료", Vector2.zero, new Vector2(136, 40), 21);

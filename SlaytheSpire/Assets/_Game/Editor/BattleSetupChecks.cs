@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Linq;
+using Roguelike.Cards;
 using Roguelike.Combat;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -69,6 +71,8 @@ namespace Roguelike.Editor
 
                 var setup = Object.FindFirstObjectByType<BattleSetup>();
                 Require(setup != null && setup.Player != null && setup.Enemy != null, "Scene failed to initialize.");
+                Require(setup.Piles.Hand.Count == 5 && setup.Piles.DrawPile.Count == 5 && setup.Piles.DiscardPile.Count == 0,
+                    "Scene Start must draw exactly one opening hand.");
                 Require(setup.Player.Combatant.CurrentHealth == 80 && setup.Player.CurrentEnergy == 3, "Incorrect Ironclad state.");
                 Require(setup.SelectedEnemy.Id == "training-slime", "Single-candidate pool selected wrong enemy.");
                 Require(setup.CurrentEnemyAction == setup.SelectedEnemy.GetAction(0), "Intent must use the selected action.");
@@ -94,6 +98,8 @@ namespace Roguelike.Editor
 
         private static void CheckData()
         {
+            CheckCardData();
+            CheckPileTransitions();
             var first = ScriptableObject.CreateInstance<EnemyDefinition>();
             var second = ScriptableObject.CreateInstance<EnemyDefinition>();
             var invalid = ScriptableObject.CreateInstance<EnemyDefinition>();
@@ -145,6 +151,58 @@ namespace Roguelike.Editor
             }
         }
 
+        private static void CheckCardData()
+        {
+            CheckCard("Strike", "타격", 1, (CardEffectType.Damage, 6));
+            CheckCard("Defend", "수비", 1, (CardEffectType.Block, 5));
+            var bash = CheckCard("Bash", "강타", 2, (CardEffectType.Damage, 8), (CardEffectType.Vulnerable, 2));
+            Require(bash.HoverHelp.Contains("50%"), "Bash is missing its Vulnerable explanation.");
+        }
+
+        private static CardDefinition CheckCard(string name, string displayName, int cost,
+            params (CardEffectType type, int amount)[] effects)
+        {
+            var card = AssetDatabase.LoadAssetAtPath<CardDefinition>($"Assets/_Game/Data/Cards/{name}.asset");
+            Require(card != null && card.Id == name.ToLowerInvariant() && card.Image != null
+                && card.DisplayName == displayName && card.Cost == cost && !string.IsNullOrWhiteSpace(card.Description),
+                $"Missing or incorrect {name} card data.");
+            Require(card.EffectCount == effects.Length, $"Incorrect effect count for {name}.");
+            for (int i = 0; i < effects.Length; i++)
+            {
+                var effect = card.GetEffect(i);
+                Require(effect.Type == effects[i].type && effect.Amount == effects[i].amount, $"Incorrect effect on {name}.");
+            }
+            return card;
+        }
+
+        private static void CheckPileTransitions()
+        {
+            var deck = new[] { "a", "b", "c", "d", "e", "f", "g" };
+            var originalDeck = deck.ToArray();
+            var piles = new CardPileState(deck, new System.Random(42));
+            Require(!piles.DrawPile.SequenceEqual(deck) && piles.DrawPile.OrderBy(id => id).SequenceEqual(deck),
+                "Initial shuffle must reorder the deck and preserve every card.");
+            piles.Draw(5);
+            var firstHand = piles.Hand.ToArray();
+            var remaining = piles.DrawPile.Reverse().ToArray();
+            piles.DiscardHand();
+            Require(piles.Hand.Count == 0 && piles.DiscardPile.SequenceEqual(firstHand), "Entire hand must be discarded in order.");
+            piles.Draw(5);
+            Require(piles.Hand.Take(2).SequenceEqual(remaining) && piles.DrawPile.Count == 2
+                && piles.DiscardPile.Count == 0, "Draw must use the remaining pile before recycling the discard.");
+            Require(!piles.Hand.Skip(2).Concat(piles.DrawPile.Reverse()).SequenceEqual(firstHand.Reverse()),
+                "Recycled discard pile was not shuffled.");
+            piles.Draw(10);
+            Require(piles.Hand.OrderBy(id => id).SequenceEqual(deck) && piles.DrawPile.Count == 0 && piles.DiscardPile.Count == 0,
+                "Drawing with both piles empty must stop without losing or duplicating cards.");
+            Require(deck.SequenceEqual(originalDeck), "Combat mutated its source deck.");
+            var empty = new CardPileState(Array.Empty<string>());
+            empty.Draw(5);
+            empty.DiscardHand();
+            Require(empty.Hand.Count == 0, "An empty deck must remain empty.");
+            Debug.Log("CARD_PILE_CHECKS_PASSED: definitions, initial shuffle, draw across both piles, recycle shuffle, exhaustion, source isolation.");
+        }
+
         private static IEnumerator CheckTurns(BattleSetup setup)
         {
             var serialized = new SerializedObject(setup);
@@ -153,12 +211,18 @@ namespace Roguelike.Editor
             var energy = (Text)serialized.FindProperty("energyLabel").objectReferenceValue;
             var intent = ((EnemyIntentView)serialized.FindProperty("intentView").objectReferenceValue).GetComponent<Text>();
             var click = new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left };
+            var run = Object.FindFirstObjectByType<RunState>();
+            var originalDeck = run.Deck.ToArray();
+            var hand = Object.FindFirstObjectByType<BattleHud>().transform.Find("Hand Area");
 
             Require(setup.Phase == BattlePhase.PlayerTurn && endTurn.IsInteractable(), "Battle must start on a playable player turn.");
+            BattleLayoutChecks.AssertHandInput(hand);
             var firstAction = setup.CurrentEnemyAction;
             Require(intent.text == "ATTACK  6", "First action was not displayed.");
             endTurn.OnPointerClick(click);
             Require(setup.Phase == BattlePhase.EnemyTurn && !endTurn.IsInteractable(), "Enemy turn must lock the button immediately.");
+            Require(setup.Piles.Hand.Count == 0 && setup.Piles.DrawPile.Count == 5 && setup.Piles.DiscardPile.Count == 5,
+                "End turn must immediately discard the hand.");
             Require(setup.Player.Combatant.CurrentHealth == 80, "Enemy acted before entering its turn.");
             endTurn.OnPointerClick(click);
             endTurn.onClick.Invoke();
@@ -166,6 +230,13 @@ namespace Roguelike.Editor
             Require(setup.Phase == BattlePhase.PlayerTurn && endTurn.IsInteractable(), "Player turn did not resume.");
             Require(setup.Player.Combatant.CurrentHealth == 74, "Single-action enemy attack was skipped or duplicated.");
             Require(setup.CurrentEnemyAction == firstAction && intent.text == "ATTACK  6", "Single action did not repeat.");
+            Require(setup.Piles.Hand.Count == 5 && setup.Piles.DrawPile.Count == 0 && setup.Piles.DiscardPile.Count == 5,
+                "Second turn must draw the remaining five cards.");
+            endTurn.OnPointerClick(click);
+            yield return null;
+            Require(setup.Piles.Hand.Count == 5 && setup.Piles.DrawPile.Count == 5 && setup.Piles.DiscardPile.Count == 0,
+                "Third turn must draw five from the recycled discard.");
+            Require(run.Deck.SequenceEqual(originalDeck), "Combat turns modified the original start deck.");
 
             var originalPool = (EnemyPool)serialized.FindProperty("enemyPool").objectReferenceValue;
             var enemy = Object.Instantiate(setup.SelectedEnemy);
@@ -234,6 +305,12 @@ namespace Roguelike.Editor
                 yield return null;
                 Require(setup.Phase == BattlePhase.Victory && setup.Player.Combatant.CurrentHealth == 80,
                     "A pending enemy action or duplicate input ran after victory.");
+
+                setup.InitializeBattle();
+                setup.Piles.Draw(5);
+                yield return null;
+                BattleLayoutChecks.AssertHandInput(hand);
+                Debug.Log("BATTLE_HAND_INPUT_PASSED: each card can be hovered in five- and ten-card fans.");
                 Debug.Log("BATTLE_TURN_CHECKS_PASSED: player/enemy order, damage and block, energy, intent cycle, victory, defeat, duplicate input.");
             }
             finally
@@ -255,11 +332,15 @@ namespace Roguelike.Editor
             Require(Label("health").text == "80/80", "Top health did not bind.");
             setup.Player.Combatant.SetHealth(47);
             Require(Label("health").text == "47/80", "Top health did not update.");
-            Require(Label("drawCount").text == "10" && Label("discardCount").text == "0", "Initial pile counts incorrect.");
+            Require(Label("drawCount").text == "5" && Label("discardCount").text == "0", "Initial pile counts incorrect.");
+            Require(setup.Piles.Hand.Count == 5 && hud.transform.Find("Hand Area").GetComponentsInChildren<EventTrigger>().Length == 5,
+                "Hand view did not show five cards.");
+            Require(run.Deck.Count(id => id == "strike") == 5 && run.Deck.Count(id => id == "defend") == 4
+                && run.Deck.Count(id => id == "bash") == 1, "Incorrect start deck composition.");
             setup.Piles.Draw(3);
-            Require(Label("drawCount").text == "7" && setup.Piles.Hand.Count == 3, "Draw count did not update.");
+            Require(Label("drawCount").text == "2" && setup.Piles.Hand.Count == 8, "Draw count did not update.");
             setup.Piles.DiscardFromHand(0);
-            Require(Label("discardCount").text == "1" && setup.Piles.Hand.Count == 2, "Discard count did not update.");
+            Require(Label("discardCount").text == "1" && setup.Piles.Hand.Count == 7, "Discard count did not update.");
             Require(run.Deck.Count == 10 && Label("deckCount").text == "10", "Combat changed the run deck.");
             run.SetGold(125);
             run.SetFloor(2);
@@ -268,6 +349,12 @@ namespace Roguelike.Editor
             var bar = hud.transform.Find("Top Status Bar");
             bar.Find("Deck").GetComponent<Button>().onClick.Invoke();
             Require(popup.activeSelf && Label("popupBody").text.Contains("타격"), "Deck button failed.");
+            hud.ClosePopup();
+            hud.transform.Find("DrawPile").GetComponent<Button>().onClick.Invoke();
+            Require(popup.activeSelf && Label("popupBody").text.Contains("총 2장"), "Draw pile button shows stale cards.");
+            hud.ClosePopup();
+            hud.transform.Find("DiscardPile").GetComponent<Button>().onClick.Invoke();
+            Require(popup.activeSelf && Label("popupBody").text.Contains("총 1장"), "Discard pile button shows stale cards.");
             hud.ClosePopup();
             bar.Find("Map").GetComponent<Button>().onClick.Invoke();
             Require(popup.activeSelf && Label("popupBody").text.Contains("2층"), "Map button failed.");
@@ -279,7 +366,7 @@ namespace Roguelike.Editor
             hud.SetVolume(1);
             hud.ClosePopup();
             setup.InitializeBattle();
-            Require(Label("health").text == "80/80" && Label("drawCount").text == "10", "HUD reset failed.");
+            Require(Label("health").text == "80/80" && Label("drawCount").text == "5", "HUD reset failed.");
             Require(run.Gold == 125 && run.Floor == 2, "Battle reset erased run state.");
         }
 

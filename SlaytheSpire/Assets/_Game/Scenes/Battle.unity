@@ -4661,6 +4661,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Roguelike.UI.BattleHud
   battle: {fileID: 1365877630}
   run: {fileID: 1365877632}
+  cardDefinitions:
+  - {fileID: 11400000, guid: 8d9daf529e3a407a882d52cc60e36fd2, type: 2}
+  - {fileID: 11400000, guid: bbd365ef803b47729176d4824cafbef0, type: 2}
+  - {fileID: 11400000, guid: 0e5767194c00482c8eab988a6a0da94c, type: 2}
   playerName: {fileID: 480729199}
   characterName: {fileID: 1630415844}
   health: {fileID: 1676866218}
