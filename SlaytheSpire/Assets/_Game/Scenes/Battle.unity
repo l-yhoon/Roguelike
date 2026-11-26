@@ -4334,9 +4334,9 @@ MonoBehaviour:
   intentView: {fileID: 2110503811}
   energyLabel: {fileID: 1236350968}
   statusLabel: {fileID: 575337051}
+  endTurnButton: {fileID: 896858919}
   runState: {fileID: 1365877632}
   energyFormat: '{0}/{1}'
-  showReadyMessage: 0
 --- !u!4 &1365877631
 Transform:
   m_ObjectHideFlags: 0

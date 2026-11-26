@@ -29,6 +29,16 @@ namespace Roguelike.Combat
             Block = Mathf.Max(0, value);
             Changed?.Invoke();
         }
+
+        public void TakeDamage(int amount)
+        {
+            if (amount <= 0 || CurrentHealth == 0) return;
+
+            int absorbed = Mathf.Min(Block, amount);
+            Block -= absorbed;
+            CurrentHealth = Mathf.Max(0, CurrentHealth - (amount - absorbed));
+            Changed?.Invoke();
+        }
     }
 
     public sealed class PlayerBattleState

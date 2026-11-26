@@ -3,7 +3,6 @@ using System.IO;
 using Roguelike.Combat;
 using Roguelike.UI;
 using UnityEditor;
-using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -83,14 +82,13 @@ namespace Roguelike.Editor
             Set(setup, "energyLabel", energy);
             Set(setup, "statusLabel", status);
 
-            var reset = Panel(canvas.transform, "New Encounter", new Vector2(475, 328), new Vector2(230, 42), new Color(.24f, .32f, .25f));
-            var button = reset.gameObject.AddComponent<Button>();
-            reset.raycastTarget = true;
-            button.targetGraphic = reset;
-            UnityEventTools.AddPersistentListener(button.onClick, setup.InitializeBattle);
-            Label(reset.transform, "Label", "NEW ENCOUNTER", Vector2.zero, new Vector2(220, 40), 20);
             var end = Panel(canvas.transform, "End Turn Placeholder", new Vector2(485, -260), new Vector2(230, 70), new Color(.16f, .21f, .20f));
-            Label(end.transform, "Label", "END TURN\nComing next", Vector2.zero, new Vector2(220, 65), 20);
+            var endTurn = end.gameObject.AddComponent<Button>();
+            end.raycastTarget = true;
+            endTurn.targetGraphic = end;
+            endTurn.interactable = false;
+            Label(end.transform, "Label", "END TURN", Vector2.zero, new Vector2(220, 65), 20);
+            Set(setup, "endTurnButton", endTurn);
             var events = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
             AssetDatabase.SaveAssets();

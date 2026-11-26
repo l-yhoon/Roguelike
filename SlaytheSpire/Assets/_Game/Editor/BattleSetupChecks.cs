@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using Roguelike.Combat;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Roguelike.Core;
 using Roguelike.UI;
@@ -18,6 +20,8 @@ namespace Roguelike.Editor
         private const string Running = "Roguelike.BattleChecks.Running";
         private static double deadline;
         private static int frames;
+        private static IEnumerator turnChecks;
+        private static int nextCheckFrame;
 
         static BattleSetupChecks()
         {
@@ -55,6 +59,14 @@ namespace Roguelike.Editor
             if (!EditorApplication.isPlaying || EditorApplication.isCompiling || ++frames < 30) return;
             try
             {
+                if (turnChecks != null)
+                {
+                    if (Time.frameCount < nextCheckFrame) return;
+                    if (turnChecks.MoveNext()) nextCheckFrame = Time.frameCount + 2;
+                    else Finish(null);
+                    return;
+                }
+
                 var setup = Object.FindFirstObjectByType<BattleSetup>();
                 Require(setup != null && setup.Player != null && setup.Enemy != null, "Scene failed to initialize.");
                 Require(setup.Player.Combatant.CurrentHealth == 80 && setup.Player.CurrentEnergy == 3, "Incorrect Ironclad state.");
@@ -75,7 +87,7 @@ namespace Roguelike.Editor
                 Require(energy.text == string.Format(format, 3, 3), "Old state retained a UI subscription.");
                 CheckHud(setup);
                 CheckIntentFollow();
-                Finish(null);
+                turnChecks = CheckTurns(setup);
             }
             catch (Exception exception) { Finish(exception); }
         }
@@ -113,6 +125,16 @@ namespace Roguelike.Editor
                 Require(state.CurrentHealth == 0 && state.Block == 0 && first.MaxHealth == 30, "State isolation or bounds failed.");
                 state.SetHealth(999);
                 Require(state.CurrentHealth == 30, "Health exceeded maximum.");
+                state.SetBlock(9);
+                state.TakeDamage(-4);
+                Require(state.CurrentHealth == 30 && state.Block == 9, "Negative damage changed state.");
+                state.TakeDamage(6);
+                Require(state.CurrentHealth == 30 && state.Block == 3, "Block failed to absorb a hit.");
+                state.TakeDamage(3);
+                Require(state.CurrentHealth == 30 && state.Block == 0, "Exact block should prevent all damage.");
+                state.SetBlock(2);
+                state.TakeDamage(int.MaxValue);
+                Require(state.CurrentHealth == 0 && state.Block == 0, "Overkill should clamp health and block to zero.");
             }
             finally
             {
@@ -120,6 +142,106 @@ namespace Roguelike.Editor
                 Object.DestroyImmediate(second);
                 Object.DestroyImmediate(invalid);
                 Object.DestroyImmediate(pool);
+            }
+        }
+
+        private static IEnumerator CheckTurns(BattleSetup setup)
+        {
+            var serialized = new SerializedObject(setup);
+            var endTurn = (Button)serialized.FindProperty("endTurnButton").objectReferenceValue;
+            var status = (Text)serialized.FindProperty("statusLabel").objectReferenceValue;
+            var energy = (Text)serialized.FindProperty("energyLabel").objectReferenceValue;
+            var intent = ((EnemyIntentView)serialized.FindProperty("intentView").objectReferenceValue).GetComponent<Text>();
+            var click = new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left };
+
+            Require(setup.Phase == BattlePhase.PlayerTurn && endTurn.IsInteractable(), "Battle must start on a playable player turn.");
+            var firstAction = setup.CurrentEnemyAction;
+            Require(intent.text == "ATTACK  6", "First action was not displayed.");
+            endTurn.OnPointerClick(click);
+            Require(setup.Phase == BattlePhase.EnemyTurn && !endTurn.IsInteractable(), "Enemy turn must lock the button immediately.");
+            Require(setup.Player.Combatant.CurrentHealth == 80, "Enemy acted before entering its turn.");
+            endTurn.OnPointerClick(click);
+            endTurn.onClick.Invoke();
+            yield return null;
+            Require(setup.Phase == BattlePhase.PlayerTurn && endTurn.IsInteractable(), "Player turn did not resume.");
+            Require(setup.Player.Combatant.CurrentHealth == 74, "Single-action enemy attack was skipped or duplicated.");
+            Require(setup.CurrentEnemyAction == firstAction && intent.text == "ATTACK  6", "Single action did not repeat.");
+
+            var originalPool = (EnemyPool)serialized.FindProperty("enemyPool").objectReferenceValue;
+            var enemy = Object.Instantiate(setup.SelectedEnemy);
+            var pool = ScriptableObject.CreateInstance<EnemyPool>();
+            try
+            {
+                var serializedEnemy = new SerializedObject(enemy);
+                var actions = serializedEnemy.FindProperty("actions");
+                actions.arraySize = 2;
+                var blockAction = actions.GetArrayElementAtIndex(1);
+                blockAction.FindPropertyRelative("type").enumValueIndex = (int)EnemyActionType.Block;
+                blockAction.FindPropertyRelative("amount").intValue = 5;
+                serializedEnemy.ApplyModifiedPropertiesWithoutUndo();
+                BattleSceneTools.SetCandidates(pool, enemy);
+                BattleSceneTools.Set(setup, "enemyPool", pool);
+                setup.InitializeBattle();
+
+                var player = setup.Player.Combatant;
+                player.SetBlock(4);
+                setup.Player.SetEnergy(1);
+                bool attackResolvedWhileLocked = false;
+                player.Changed += () =>
+                {
+                    if (player.CurrentHealth != 78 || setup.Player.CurrentEnergy != 1) return;
+                    attackResolvedWhileLocked = setup.Phase == BattlePhase.EnemyTurn && !endTurn.IsInteractable() && player.Block == 0;
+                    setup.EndTurn();
+                };
+                endTurn.OnPointerClick(click);
+                yield return null;
+                Require(attackResolvedWhileLocked && player.CurrentHealth == 78 && setup.Phase == BattlePhase.PlayerTurn,
+                    "Attack did not consume block before HP during the locked enemy turn.");
+                Require(setup.Player.CurrentEnergy == 3 && energy.text == "3/3", "Player energy did not recover.");
+                Require(setup.CurrentEnemyAction == enemy.GetAction(1) && intent.text == "BLOCK  5", "Block intent did not advance.");
+
+                setup.Enemy.SetBlock(9);
+                player.SetBlock(7);
+                endTurn.OnPointerClick(click);
+                Require(setup.Enemy.Block == 9 && player.Block == 7, "Block reset before the owning turn started.");
+                yield return null;
+                Require(setup.Enemy.Block == 5 && player.CurrentHealth == 78 && player.Block == 0,
+                    "Block action, enemy block replacement, or player block reset failed.");
+                Require(setup.CurrentEnemyAction == enemy.GetAction(0) && intent.text == "ATTACK  6", "Attack intent did not wrap.");
+                BattleLayoutChecks.AssertIntentAlignment(intent.GetComponent<EnemyIntentView>());
+
+                player.SetHealth(2);
+                setup.Player.SetEnergy(1);
+                endTurn.OnPointerClick(click);
+                yield return null;
+                Require(setup.Phase == BattlePhase.Defeat && player.CurrentHealth == 0 && setup.Enemy.Block == 0,
+                    "Lethal attack did not end the battle or clear expired enemy block.");
+                Require(!endTurn.IsInteractable() && status.text == "패배" && setup.Player.CurrentEnergy == 1,
+                    "Defeat did not lock input or incorrectly started another player turn.");
+                endTurn.onClick.Invoke();
+                setup.EndTurn();
+                Require(setup.Phase == BattlePhase.Defeat, "Turn input bypassed defeat.");
+
+                setup.InitializeBattle();
+                endTurn.OnPointerClick(click);
+                setup.Enemy.TakeDamage(setup.Enemy.MaxHealth);
+                Require(setup.Phase == BattlePhase.Victory && !endTurn.IsInteractable() && status.text == "승리",
+                    "Enemy death must declare victory and lock input immediately.");
+                Require(setup.CurrentEnemyAction == null && !intent.enabled, "Finished battles should clear pending intent.");
+                endTurn.OnPointerClick(click);
+                endTurn.onClick.Invoke();
+                setup.EndTurn();
+                yield return null;
+                Require(setup.Phase == BattlePhase.Victory && setup.Player.Combatant.CurrentHealth == 80,
+                    "A pending enemy action or duplicate input ran after victory.");
+                Debug.Log("BATTLE_TURN_CHECKS_PASSED: player/enemy order, damage and block, energy, intent cycle, victory, defeat, duplicate input.");
+            }
+            finally
+            {
+                BattleSceneTools.Set(setup, "enemyPool", originalPool);
+                setup.InitializeBattle();
+                Object.DestroyImmediate(pool);
+                Object.DestroyImmediate(enemy);
             }
         }
 
@@ -208,6 +330,8 @@ namespace Roguelike.Editor
         {
             SessionState.SetBool(Running, false);
             EditorApplication.update -= Tick;
+            (turnChecks as IDisposable)?.Dispose();
+            turnChecks = null;
             if (exception != null) Debug.LogException(exception);
             else Debug.Log("BATTLE_SETUP_CHECKS_PASSED: pools, state isolation, HUD, reset, intent follows enemy movement, resizing and sprite changes.");
             EditorApplication.Exit(exception == null ? 0 : 1);

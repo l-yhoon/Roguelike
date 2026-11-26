@@ -74,7 +74,6 @@ namespace Roguelike.Editor
             if (run == null) run = setup.gameObject.AddComponent<RunState>();
             BattleSceneTools.Set(setup, "runState", run);
             StringValue(setup, "energyFormat", "{0}/{1}");
-            BoolValue(setup, "showReadyMessage", false);
             BattleSceneTools.Set(hud, "battle", setup);
             BattleSceneTools.Set(hud, "run", run);
 
@@ -125,7 +124,7 @@ namespace Roguelike.Editor
             var end = IconButton(hudRoot, "EndTurn", new Vector2(520, -235), new Vector2(166, 65), null);
             Label(end.transform, "End Turn Label", "턴 종료", Vector2.zero, new Vector2(136, 40), 21);
             end.interactable = false;
-            // Hidden status is retained for actionable initialization errors only.
+            BattleSceneTools.Set(setup, "endTurnButton", end);
             var status = Label(hudRoot, "Status", "", new Vector2(0, -347), new Vector2(1100, 25), 15);
             BattleSceneTools.Set(setup, "statusLabel", status);
             CreatePopup(content, hud);
@@ -318,12 +317,6 @@ namespace Roguelike.Editor
         {
             var serialized = new SerializedObject(target);
             serialized.FindProperty(name).stringValue = value;
-            serialized.ApplyModifiedPropertiesWithoutUndo();
-        }
-        private static void BoolValue(Object target, string name, bool value)
-        {
-            var serialized = new SerializedObject(target);
-            serialized.FindProperty(name).boolValue = value;
             serialized.ApplyModifiedPropertiesWithoutUndo();
         }
     }

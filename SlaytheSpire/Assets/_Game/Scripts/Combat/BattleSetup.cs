@@ -6,6 +6,8 @@ using Roguelike.Cards;
 
 namespace Roguelike.Combat
 {
+    public enum BattlePhase { Inactive, PlayerTurn, EnemyTurn, Victory, Defeat }
+
     public sealed class BattleSetup : MonoBehaviour
     {
         [SerializeField] private CharacterDefinition character;
@@ -15,9 +17,12 @@ namespace Roguelike.Combat
         [SerializeField] private EnemyIntentView intentView;
         [SerializeField] private Text energyLabel;
         [SerializeField] private Text statusLabel;
+        [SerializeField] private Button endTurnButton;
         [SerializeField] private RunState runState;
         [SerializeField] private string energyFormat = "ENERGY  {0} / {1}";
-        [SerializeField] private bool showReadyMessage = true;
+        private int enemyActionIndex;
+        private int endTurnFrame;
+
         public string CharacterName => character == null ? "" : character.DisplayName;
         public CardPileState Piles { get; private set; }
         public event System.Action Initialized;
@@ -25,14 +30,42 @@ namespace Roguelike.Combat
         public CombatantState Enemy { get; private set; }
         public EnemyDefinition SelectedEnemy { get; private set; }
         public EnemyAction CurrentEnemyAction { get; private set; }
+        public BattlePhase Phase { get; private set; }
 
         private void Start() => InitializeBattle();
+
+        private void OnEnable()
+        {
+            if (endTurnButton != null) endTurnButton.onClick.AddListener(EndTurn);
+            RefreshEndTurnButton();
+        }
+
+        private void OnDisable()
+        {
+            if (endTurnButton != null) endTurnButton.onClick.RemoveListener(EndTurn);
+            RefreshEndTurnButton();
+        }
+
+        private void Update()
+        {
+            // Keep the enemy phase locked through the frame that received the click.
+            if (Phase == BattlePhase.EnemyTurn && Time.frameCount != endTurnFrame)
+                ResolveEnemyTurn();
+        }
+
+        public void EndTurn()
+        {
+            if (!isActiveAndEnabled || Phase != BattlePhase.PlayerTurn) return;
+
+            endTurnFrame = Time.frameCount;
+            SetPhase(BattlePhase.EnemyTurn);
+        }
 
         public void InitializeBattle()
         {
             ReleaseState();
             if (playerView == null || enemyView == null || intentView == null
-                || energyLabel == null || statusLabel == null)
+                || energyLabel == null || statusLabel == null || endTurnButton == null)
             {
                 Fail("BattleSetup: view references are missing. Check the Inspector.");
                 return;
@@ -56,17 +89,83 @@ namespace Roguelike.Combat
             if (runState != null) Piles = new CardPileState(runState.Deck);
             SelectedEnemy = selected;
             Enemy = new CombatantState(selected.MaxHealth);
-            CurrentEnemyAction = selected.GetAction(0);
             playerView.gameObject.SetActive(true);
             enemyView.gameObject.SetActive(true);
             playerView.Bind(character.DisplayName, character.Portrait, Player.Combatant);
             enemyView.Bind(selected.DisplayName, selected.Portrait, Enemy);
             intentView.BindTarget(enemyView);
-            intentView.Show(CurrentEnemyAction);
+            enemyActionIndex = 0;
+            ShowEnemyAction();
             Player.Changed += RefreshEnergy;
-            RefreshEnergy();
-            statusLabel.text = showReadyMessage ? "Battle setup ready  |  Card and turn systems come next" : "";
+            Player.Combatant.Changed += CheckBattleResult;
+            Enemy.Changed += CheckBattleResult;
+            statusLabel.text = "";
+            BeginPlayerTurn();
             Initialized?.Invoke();
+        }
+
+        private void BeginPlayerTurn()
+        {
+            Player.Combatant.SetBlock(0);
+            if (Phase == BattlePhase.Victory || Phase == BattlePhase.Defeat) return;
+
+            Player.SetEnergy(Player.BaseEnergy);
+            if (Phase == BattlePhase.Inactive || Phase == BattlePhase.EnemyTurn)
+                SetPhase(BattlePhase.PlayerTurn);
+        }
+
+        private void ResolveEnemyTurn()
+        {
+            Enemy.SetBlock(0);
+            if (Phase != BattlePhase.EnemyTurn) return;
+
+            var action = CurrentEnemyAction;
+            if (action.Type == EnemyActionType.Attack)
+                Player.Combatant.TakeDamage(action.Amount);
+            else
+                Enemy.SetBlock(action.Amount);
+
+            if (Phase != BattlePhase.EnemyTurn) return;
+
+            enemyActionIndex = (enemyActionIndex + 1) % SelectedEnemy.ActionCount;
+            ShowEnemyAction();
+            BeginPlayerTurn();
+        }
+
+        private void ShowEnemyAction()
+        {
+            CurrentEnemyAction = SelectedEnemy.GetAction(enemyActionIndex);
+            intentView.Show(CurrentEnemyAction);
+        }
+
+        private void CheckBattleResult()
+        {
+            if (Phase == BattlePhase.Victory || Phase == BattlePhase.Defeat) return;
+
+            if (Player.Combatant.CurrentHealth == 0)
+                FinishBattle(BattlePhase.Defeat, "패배");
+            else if (Enemy.CurrentHealth == 0)
+                FinishBattle(BattlePhase.Victory, "승리");
+        }
+
+        private void FinishBattle(BattlePhase result, string message)
+        {
+            SetPhase(result);
+            CurrentEnemyAction = null;
+            intentView.Clear();
+            statusLabel.text = message;
+        }
+
+        private void SetPhase(BattlePhase phase)
+        {
+            Phase = phase;
+            RefreshEndTurnButton();
+        }
+
+        private void RefreshEndTurnButton()
+        {
+            if (endTurnButton != null)
+                endTurnButton.interactable = isActiveAndEnabled && Phase == BattlePhase.PlayerTurn;
         }
 
         private void RefreshEnergy() => energyLabel.text = string.Format(energyFormat, Player.CurrentEnergy, Player.BaseEnergy);
@@ -77,7 +176,13 @@ namespace Roguelike.Combat
         }
         private void ReleaseState()
         {
-            if (Player != null) Player.Changed -= RefreshEnergy;
+            SetPhase(BattlePhase.Inactive);
+            if (Player != null)
+            {
+                Player.Changed -= RefreshEnergy;
+                Player.Combatant.Changed -= CheckBattleResult;
+            }
+            if (Enemy != null) Enemy.Changed -= CheckBattleResult;
             if (playerView != null) playerView.Unbind();
             if (enemyView != null) enemyView.Unbind();
             Player = null;
